@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { useState } from "react";
-import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import * as Yup from "yup";
 
 const SignUpSchema = Yup.object().shape({
@@ -13,6 +13,7 @@ const SignUpSchema = Yup.object().shape({
 export default function SignUpForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmedPassword, setShowConfirmPassword] = useState(false);
+    const [message, setMessage] = useState("");
 
     return (
         <View style={styles.container}>
@@ -27,11 +28,11 @@ export default function SignUpForm() {
                 }}
                 validationSchema={SignUpSchema}
                 onSubmit={(values, {resetForm}) => {
-                    console.log("Sign Up Data:", values);
-                    
-                    Alert.alert("Success", "Account created successfully!");
+                    console.log("Sign Up Data:", values);                  
+                    setMessage(`Sign Up success. Welcome to Employee Management: ${values.fullName}`)
+                    resetForm();
 
-                   resetForm();
+                    setTimeout(() => setMessage(""), 5000);
                 }}
                 >
 
@@ -107,10 +108,13 @@ export default function SignUpForm() {
 
                             </View>
 
+                            <Button title="Sign Up" onPress={() => handleSubmit()} disabled={!isValid} /> 
 
-
-
-                            <Button title="Sign Up" onPress={() => handleSubmit()} disabled={!isValid} />  
+                            {message !== "" && (
+                                <Text style={styles.success}>
+                                    {message}
+                                </Text>
+                            )} 
  
                         </View>
                     )}
@@ -161,5 +165,12 @@ const styles = StyleSheet.create({
     error: {
         color: "red",
         flexShrink: 1,
-    }
+    },
+
+    success: {
+    color: "skyblue",
+    marginTop: 10,
+    fontWeight: "bold",
+    textAlign: "center",
+    },
 });

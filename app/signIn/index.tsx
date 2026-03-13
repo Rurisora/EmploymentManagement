@@ -1,7 +1,7 @@
 
 import { Formik } from "formik";
 import { useState } from "react";
-import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import * as Yup from "yup";
 
 const SignInSchema = Yup.object().shape({
@@ -11,7 +11,7 @@ const SignInSchema = Yup.object().shape({
 
 export default function SignInForm() {
     const [showPassword, setShowPassword] = useState(false);
-
+    const [message, setMessage] = useState("");
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Sign In</Text>
@@ -19,11 +19,10 @@ export default function SignInForm() {
             <Formik initialValues={{email: "", password: ""}}
                 validationSchema={SignInSchema}
                 onSubmit={(values, {resetForm}) => {
-
-                    Alert.alert("Success", "Signed in successfully!");
-
-                    resetForm();
                     console.log("Sign In Data:", values);
+                    setMessage("Sign In success. Welcome back")
+                    resetForm();
+
                 }}
             >
                 {({
@@ -65,6 +64,12 @@ export default function SignInForm() {
                         </View>
 
                         <Button title="Sign In" onPress={() => handleSubmit()} disabled={!isValid} />
+                        
+                        {message !== "" && (
+                            <Text style={styles.success}>
+                                {message}
+                            </Text>
+                        )}                         
                     </View>
                 )}
             </Formik>
@@ -111,5 +116,12 @@ const styles = StyleSheet.create({
         minWidth: 60,
         alignItems: "center",
         justifyContent: "center",
+    },
+
+    success: {
+    color: "skyblue",
+    marginTop: 10,
+    fontWeight: "bold",
+    textAlign: "center",
     },
 })

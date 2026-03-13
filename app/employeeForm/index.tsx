@@ -1,7 +1,7 @@
-import React, { useState } from "react"; // ADDED useState
 import { Formik } from "formik";
+import { useState } from "react"; // ADDED useState
+import { Button, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import * as Yup from "yup";
-import { View, TextInput, Button, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 
 const employeeSchema = Yup.object().shape({
   name: Yup.string()
@@ -30,9 +30,10 @@ export default function EmployeeForm() {
         <Formik
           initialValues={{ name: "", email: "", phone: "", department: "", position: "" }}
           validationSchema={employeeSchema}
-          onSubmit={(values) => {
+          onSubmit={(values, {resetForm}) => {
             console.log(values);
             setMessage("Employee information submitted successfully!"); // ADDED success message on submit
+            resetForm();            
           }}
           
         >
