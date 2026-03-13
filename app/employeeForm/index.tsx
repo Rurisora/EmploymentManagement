@@ -4,7 +4,7 @@ import { Button, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, T
 import * as Yup from "yup";
 
 const employeeSchema = Yup.object().shape({
-  name: Yup.string()
+  name: Yup.string().matches(/^[A-Za-z\s]+$/, "Name cannot contain numbers or special characters")
     .required("Name is required")
     .min(2, "Name must be at least 2 characters"),
   email: Yup.string()
