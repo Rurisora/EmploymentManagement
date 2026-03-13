@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // ADDED useState
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { View, TextInput, Button, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
@@ -19,6 +19,8 @@ const employeeSchema = Yup.object().shape({
 });
 
 export default function EmployeeForm() {
+
+  const [message, setMessage] = useState(""); // ADDED state for success message
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -28,7 +30,11 @@ export default function EmployeeForm() {
         <Formik
           initialValues={{ name: "", email: "", phone: "", department: "", position: "" }}
           validationSchema={employeeSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={(values) => {
+            console.log(values);
+            setMessage("Employee information submitted successfully!"); // ADDED success message on submit
+          }}
+          
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View>
@@ -95,6 +101,12 @@ export default function EmployeeForm() {
               {touched.position && errors.position && <Text style={styles.error}>{errors.position}</Text>}
 
               <Button title="Submit" onPress={() => handleSubmit()} />
+
+              {message !== "" && (
+                <Text style = {styles.success}>
+                  {message}
+                </Text>
+              )} 
             </View>
           )}
         </Formik>
@@ -134,6 +146,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 100,   // align with input field
   },
+
+  success: {
+    color: "skyblue",
+    marginTop: 10,
+    fontWeight: "bold",
+    textAlign: "center",
+  }
 });
 
 
